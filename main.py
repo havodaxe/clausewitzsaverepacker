@@ -20,9 +20,9 @@ if(not path.exists("{}/".format(output_dir))):
 if(len(glob("{}/*".format(output_dir))) != 0):
     raise RuntimeError(output_not_empty.format(output_dir))
 
-#print(argv)
+save_paths = sorted(argv[1:], key=path.getmtime)
 
-for save_path in argv[1:]:
+for save_path in save_paths:
     extract_path = "{}/{}".format(output_dir, save_path[:-4])
     mkdir(extract_path)
     run(["unzip", save_path, "-d", extract_path])
