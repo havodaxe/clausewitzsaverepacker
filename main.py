@@ -24,12 +24,20 @@ save_paths = sorted(argv[1:], key=path.getmtime)
 
 for save_path in save_paths:
     extract_path = "{}/{}".format(output_dir, save_path[:-4])
+    # output looks something_like: output/Country1444_11_11
+
     mkdir(extract_path)
     run(["unzip", save_path, "-d", extract_path])
+    # output looks something like:
+    # unzip Country1444_11_11.eu4 -d output/Country1444_11_11
+
     timestamp = path.getmtime(save_path)
     with open("{}/time".format(extract_path), "wt") as timefile:
         timefile.write("{}\n".format(timestamp))
+        # output looks something like: 1590696926.511145
         timefile.write("{}\n".format(datetime.fromtimestamp(timestamp)))
+        # output looks something like: 2020-05-28 22:15:26.511145
+
     utime(extract_path, (timestamp, timestamp))
     # I think this has to be done after all the other things as they
     # edit the directory
