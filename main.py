@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from glob import glob
-from os import path, mkdir
+from os import path, mkdir, utime
 from sys import argv
 from subprocess import run
 from datetime import datetime
@@ -30,4 +30,7 @@ for save_path in save_paths:
     with open("{}/time".format(extract_path), "wt") as timefile:
         timefile.write("{}\n".format(timestamp))
         timefile.write("{}\n".format(datetime.fromtimestamp(timestamp)))
+    utime(extract_path, (timestamp, timestamp))
+    # I think this has to be done after all the other things as they
+    # edit the directory
 
