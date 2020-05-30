@@ -23,7 +23,7 @@ if(len(glob("{}/*".format(output_dir))) != 0):
 save_paths = sorted(argv[1:], key=path.getmtime)
 
 for save_path in save_paths:
-    extract_path = "{}/{}".format(output_dir, save_path[:-4])
+    extract_path = "{}/{}".format(output_dir, save_path)
     # output looks something_like: output/Country1444_11_11
 
     mkdir(extract_path)
