@@ -6,6 +6,9 @@ from sys import argv
 from subprocess import run
 from datetime import datetime
 
+save_paths = sorted(argv[1:], key=path.getmtime)
+# sort according to modification time
+
 output_not_empty = "{}/ not empty, back up or clear out contents"
 
 output_dir = input("Output directory: ")
@@ -20,7 +23,7 @@ if(not path.exists("{}/".format(output_dir))):
 if(len(glob("{}/*".format(output_dir))) != 0):
     raise RuntimeError(output_not_empty.format(output_dir))
 
-save_paths = sorted(argv[1:], key=path.getmtime)
+extract_paths = []
 
 for save_path in save_paths:
     extract_path = "{}/{}".format(output_dir, save_path)
@@ -41,4 +44,6 @@ for save_path in save_paths:
     utime(extract_path, (timestamp, timestamp))
     # I think this has to be done after all the other things as they
     # edit the directory
+    extract_paths.append(extract_path)
 
+run(["7z", "a", "output.7z", *extract_paths])
